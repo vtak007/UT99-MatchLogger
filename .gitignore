@@ -1,0 +1,13 @@
+# Compiled UnrealScript package
+*.u
+
+# UT99 logs
+*.log
+
+# OS / editor cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# .ini files hold secrets/PII — keep local (see global rule)
+*.ini

@@ -1,0 +1,5 @@
+[Public]
+Object=(Name=MatchLogger.MatchLogger,Class=Class,MetaClass=Engine.Mutator,Description="Match Logger,Logs match results with scoreboard and weapon statistics to HTML and CSV files.")
+
+[MatchLogger]
+Description="Logs match results with scoreboard and weapon statistics to HTML and CSV files at the end of each game."
