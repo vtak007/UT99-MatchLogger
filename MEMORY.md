@@ -22,6 +22,14 @@ UT469e, IG+, ACE v14e, Nexgen 112N, NFO managed host, FTP/WinSCP only — no SSH
 
 ## RULED-OUT THEORIES (do not re-try)
 
+- **`ucc make -All` in the build script** — WRONG. `-All` forces a rebuild of every
+  `EditPackages` entry, which on this box also recompiles and overwrites `SmartSB124.u`
+  and `PersistentMute.u` (the only other entries with sources present; the stock packages
+  have no `.uc` and would just churn). `build.ps1` deletes `MatchLogger.u` at step 2 and
+  plain `ucc make` only builds packages whose `.u` is missing — so plain `make` already
+  builds exactly this one package. Verified 2026-08-21: after a real run, `SmartSB124.u`,
+  `PersistentMute.u` and `Botpack.u` md5s were byte-identical before and after.
+  NOTE: `UT99 SmartSB`'s own `build.ps1` still carries `-All` — same latent trap, untouched.
 - **Mutator name wrong / not loading** — No. `MatchLogger.MatchLogger` is correct in the
   `.int`, ServerPackages, and the `?mutator=` line; log shows one `Add mutator` per map.
 - **Nexgen "Mutators Used" double-loading it** — No. Single load per map confirmed in logs.
@@ -56,6 +64,11 @@ UT469e, IG+, ACE v14e, Nexgen 112N, NFO managed host, FTP/WinSCP only — no SSH
 
 ## CHANGE LOG
 
+- 2026-08-21 — `build.ps1`: dropped the `-All` flag from `ucc make` (branch
+  `fix/build-drop-all-flag`). First real run of the script verified: `Success - 0 error(s),
+  0 warnings`, mirror repopulated from `Source/`, `MatchLogger.u` rebuilt, and no other
+  package touched. Note: a rebuilt `.u` will not md5-match the previous one even from
+  identical source — `ucc` output is not byte-reproducible.
 - 2026-08-21 — Set up as a git repo (`vtak007/UT99-MatchLogger`, public). Source moved from
   `C:\UnrealTournament\MatchLogger\Classes` to `Source/`; `Build_MatchLogger.bat` replaced by
   the guarded `build.ps1` (mirror re-sync + commit-before-deploy check, SmartSB pattern);

@@ -42,6 +42,13 @@ Requires `EditPackages=MatchLogger` under `[Editor.EditorEngine]` in
 `C:\UnrealTournament\System\UnrealTournament.ini` — the script checks this and aborts if
 it's missing.
 
+> [!WARNING]
+> The script runs plain `ucc make`, **not** `ucc make -All`. `-All` forces a rebuild of every
+> package listed in `EditPackages`, which on this box would also recompile and overwrite
+> `SmartSB124.u` and `PersistentMute.u`. Because the script deletes `MatchLogger.u` first and
+> plain `make` only builds packages whose `.u` is missing, exactly one package gets built.
+> Don't add `-All`.
+
 ## Installation
 
 **1. Install files** — copy to the server's `System\` folder:
