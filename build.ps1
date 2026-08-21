@@ -75,8 +75,12 @@ Write-Host "Mirror re-synced."
 if (Test-Path $pkg) { Remove-Item $pkg -Force }
 
 # --- 3. Build ---
+# NOTE: plain "make", NOT "make -All". -All rebuilds every EditPackages entry, which would
+# also recompile and overwrite SmartSB124.u and PersistentMute.u. Step 2 deleted
+# MatchLogger.u, and plain "make" only builds packages whose .u is missing - so exactly
+# this package gets built.
 Push-Location $system
-try { $log = & .\ucc.exe make -All 2>&1 } finally { Pop-Location }
+try { $log = & .\ucc.exe make 2>&1 } finally { Pop-Location }
 
 $summary  = $log | Select-String -Pattern '^(Success|Failure)' | Select-Object -Last 1
 $compiled = $log | Select-String -Pattern 'Compiling MatchLogger'
