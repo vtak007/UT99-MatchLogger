@@ -29,7 +29,9 @@ UT469e, IG+, ACE v14e, Nexgen 112N, NFO managed host, FTP/WinSCP only — no SSH
   plain `ucc make` only builds packages whose `.u` is missing — so plain `make` already
   builds exactly this one package. Verified 2026-08-21: after a real run, `SmartSB124.u`,
   `PersistentMute.u` and `Botpack.u` md5s were byte-identical before and after.
-  NOTE: `UT99 SmartSB`'s own `build.ps1` still carries `-All` — same latent trap, untouched.
+  NOTE: `UT99 SmartSB`'s own `build.ps1` also runs plain `ucc make`, with the same NOTE in
+  its step 3 — there is no latent `-All` trap there. Verified 2026-10-31; an earlier
+  version of this line claimed SmartSB still carried `-All`, which was wrong.
 - **Mutator name wrong / not loading** — No. `MatchLogger.MatchLogger` is correct in the
   `.int`, ServerPackages, and the `?mutator=` line; log shows one `Add mutator` per map.
 - **Nexgen "Mutators Used" double-loading it** — No. Single load per map confirmed in logs.
@@ -64,6 +66,11 @@ UT469e, IG+, ACE v14e, Nexgen 112N, NFO managed host, FTP/WinSCP only — no SSH
 
 ## CHANGE LOG
 
+- 2026-10-31 — `MEMORY.md`: corrected the RULED-OUT THEORIES note that claimed `UT99
+  SmartSB`'s `build.ps1` still carried `-All` — it runs plain `ucc make` too, with the same
+  NOTE in its step 3. No build-script change was needed anywhere. Also cleared the stray
+  untracked `MatchLogger.u` / `MatchLogger_built.u` copies from the project root (the live
+  VPS copy and the build output remain in their own locations).
 - 2026-08-21 — `build.ps1`: dropped the `-All` flag from `ucc make` (branch
   `fix/build-drop-all-flag`). First real run of the script verified: `Success - 0 error(s),
   0 warnings`, mirror repopulated from `Source/`, `MatchLogger.u` rebuilt, and no other
