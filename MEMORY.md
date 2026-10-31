@@ -23,12 +23,16 @@ UT469e, IG+, ACE v14e, Nexgen 112N, NFO managed host, FTP/WinSCP only — no SSH
 ## RULED-OUT THEORIES (do not re-try)
 
 - **`ucc make -All` in the build script** — WRONG. `-All` forces a rebuild of every
-  `EditPackages` entry, which on this box also recompiles and overwrites `SmartSB124.u`
-  and `PersistentMute.u` (the only other entries with sources present; the stock packages
-  have no `.uc` and would just churn). `build.ps1` deletes `MatchLogger.u` at step 2 and
-  plain `ucc make` only builds packages whose `.u` is missing — so plain `make` already
-  builds exactly this one package. Verified 2026-08-21: after a real run, `SmartSB124.u`,
-  `PersistentMute.u` and `Botpack.u` md5s were byte-identical before and after.
+  `EditPackages` entry, which on this box also recompiles and overwrites `SmartSB124.u`,
+  `PersistentMute.u` and `DynamicBotBalancer.u` (the other entries with sources present;
+  the stock packages and the source-less dependency entries `Nexgen112N` / `IACEv14` have
+  no `.uc` and would just churn). This set GROWS as projects are added — re-check
+  `EditPackages` rather than trusting this list. `build.ps1` deletes `MatchLogger.u` at
+  step 2 and plain `ucc make` only builds packages whose `.u` is missing — so plain
+  `make` already builds exactly this one package. Verified 2026-08-21: after a real run,
+  `SmartSB124.u`,
+  `PersistentMute.u` and `Botpack.u` md5s were byte-identical before and after (that run
+  predates `DynamicBotBalancer`, added 2026-09-03, so it was not part of that check).
   NOTE: `UT99 SmartSB`'s own `build.ps1` also runs plain `ucc make`, with the same NOTE in
   its step 3 — there is no latent `-All` trap there. Verified 2026-10-31; an earlier
   version of this line claimed SmartSB still carried `-All`, which was wrong.
@@ -66,6 +70,13 @@ UT469e, IG+, ACE v14e, Nexgen 112N, NFO managed host, FTP/WinSCP only — no SSH
 
 ## CHANGE LOG
 
+- 2026-10-31 — Docs: the `-All` warning in `MEMORY.md` and `README.md` named only
+  `SmartSB124.u` and `PersistentMute.u` as the collateral packages. `DynamicBotBalancer`
+  (`EditPackages` line 477, source dated 2026-09-03) is a third, added after the
+  2026-08-21 verification run. Corrected both, noted that the set grows as projects are
+  added, and recorded that `Nexgen112N` / `IACEv14` are source-less dependency entries
+  (needed for compiling against Nexgen/ACE — do not remove them). No behaviour change:
+  `build.ps1` still runs plain `ucc make`.
 - 2026-10-31 — `MEMORY.md`: corrected the RULED-OUT THEORIES note that claimed `UT99
   SmartSB`'s `build.ps1` still carried `-All` — it runs plain `ucc make` too, with the same
   NOTE in its step 3. No build-script change was needed anywhere. Also cleared the stray

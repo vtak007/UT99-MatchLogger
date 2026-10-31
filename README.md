@@ -45,8 +45,10 @@ it's missing.
 > [!WARNING]
 > The script runs plain `ucc make`, **not** `ucc make -All`. `-All` forces a rebuild of every
 > package listed in `EditPackages`, which on this box would also recompile and overwrite
-> `SmartSB124.u` and `PersistentMute.u`. Because the script deletes `MatchLogger.u` first and
-> plain `make` only builds packages whose `.u` is missing, exactly one package gets built.
+> `SmartSB124.u`, `PersistentMute.u` and `DynamicBotBalancer.u` (every other entry with
+> sources present — re-check the list when you add a project). Because the script deletes
+> `MatchLogger.u` first and plain `make` only builds packages whose `.u` is missing,
+> exactly one package gets built.
 > Don't add `-All`.
 
 ## Installation
